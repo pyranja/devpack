@@ -40,11 +40,17 @@ Task Build -description "Apply all included modules to the workspace package." -
     }
 }
 
-Task Test -description "Run all module integration tests." {
+Task Test -description "run test task in a separate powershell instance." {
+    powershell "Invoke-psake InlineTest"
+}
+
+Task InlineTest -description "run all module tests in current powershell session." {
     Write-Verbose "running integration tests"
     Assert $(Test-Path $package\Set-Env.ps1) "Set-Env.ps1 not found - is the package built?"
-    Invoke-Expression "$package\Set-Env.ps1"
-    Invoke-Pester
+    Exec {
+        Invoke-Expression "$package\Set-Env.ps1"
+        Invoke-Pester
+    }
 }
 
 Task Assemble -description "Assemble the built package into a releasable archive." {
