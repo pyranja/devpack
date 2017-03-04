@@ -5,7 +5,7 @@ Set-StrictMode -Version "Latest"
     .SYNOPSIS devpack base module
 #>
 
-FormatTaskName "base::{0}"
+FormatTaskName "Base::{0}"
 
 Task Default -requiredVariables target -depends Install
 

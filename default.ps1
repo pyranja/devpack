@@ -14,6 +14,8 @@ Properties {
     $package = Join-Path $workspace pkg
 }
 
+FormatTaskName "Devpack::{0}"
+
 Task Default -Depends Build, Assemble
 
 Task Clean -description "Delete the build workspace, including all cached binaries." {
