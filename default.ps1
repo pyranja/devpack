@@ -22,7 +22,7 @@ Task Clean -description "Delete the build workspace, including all cached binari
 }
 
 Task Build -description "Apply all included modules to the workspace package." -preaction {
-    Remove-Item -Path $package -ErrorAction SilentlyContinue
+    Remove-Item -Path $package -Recurse -ErrorAction SilentlyContinue
     New-Item -Path $package -ItemType Directory -Force | Out-Null
     @("home", "tools") | ForEach-Object { New-Item -Path $package\$_ -ItemType Directory -Force | Out-Null }
 } {
