@@ -26,7 +26,7 @@ Task Build -description "Apply all included modules to the workspace package." -
     New-Item -Path $package -ItemType Directory -Force | Out-Null
     @("home", "tools") | ForEach-Object { New-Item -Path $package\$_ -ItemType Directory -Force | Out-Null }
 } {
-    @("$root\base") + $(Get-ChildItem $root\modules\*) | ForEach-Object {
+    @("$root\base") + $(Get-ChildItem $root\modules\* -Directory) | ForEach-Object {
         Write-Verbose "including $_"
         Assert $(Test-Path $_\default.ps1) "module build script in '$_' missing"
         # perform module build
