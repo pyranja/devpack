@@ -38,6 +38,13 @@ Task Build -description "Apply all included modules to the workspace package." -
     }
 }
 
+Task Test -description "Run all module integration tests." {
+    Write-Verbose "running integration tests"
+    Assert $(Test-Path $package\Set-Env.ps1) "Set-Env.ps1 not found - is the package built?"
+    Invoke-Expression "$package\Set-Env.ps1"
+    Invoke-Pester
+}
+
 Task Assemble -description "Assemble the built package into a releasable archive." {
     $assembly_file = Join-Path $workspace $assembly
     Write-Verbose "Assembling $assembly_file from $package"
