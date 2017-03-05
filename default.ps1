@@ -35,7 +35,9 @@ Task Build -description "Apply all included modules to the workspace package." -
         Exec { Invoke-psake -buildFile $_\default.ps1  -parameters @{"target"="$package"} }
         # include environment partial
         If (Test-Path $_\env.partial.ps1) {
-            Get-Content -Path $_\env.partial.ps1 -Encoding UTF8 | Out-File -FilePath $(Join-Path $package Set-Env.ps1) -Encoding utf8 -Append -NoClobber
+            $env_script = $(Join-Path $package Set-Env.ps1)
+            "# --- env $_" | Out-File -FilePath $env_script -Encoding utf8 -Append -NoClobber
+            Get-Content -Path $_\env.partial.ps1 -Encoding UTF8 | Out-File -FilePath $env_script -Encoding utf8 -Append -NoClobber
         }
     }
 }
