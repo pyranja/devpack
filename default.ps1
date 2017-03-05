@@ -54,7 +54,25 @@ Task InlineTest -description "run all module tests in current powershell session
     Assert $(Test-Path $package\Set-Env.ps1) "Set-Env.ps1 not found - is the package built?"
     Exec {
         Invoke-Expression "$package\Set-Env.ps1"
-        Invoke-Pester
+        RunIntegrationTests
+    }
+}
+
+function RunIntegrationTests {
+    $test_results = Join-Path $workspace test-results.xml
+    Invoke-Pester -OutputFile $test_results -OutputFormat NUnitXml -EnableExit -Strict 2>$null 3>$null
+    $success = $?
+
+    If ($Env:APPVEYOR_JOB_ID) {
+        $endpoint = "https://ci.appveyor.com/api/testresults/nunit/$Env:APPVEYOR_JOB_ID"
+        Write-Verbose "uploading $test_results to $endpoint"
+        (New-Object 'System.Net.WebClient').UploadFile($endpoint, (Resolve-Path $test_results))
+    } else {
+        Write-Warning "APPVEYOR_JOB_ID not defined - skipping test result reporting"
+    }
+
+    If (-not $success) {
+        Throw "test run failed"
     }
 }
 
