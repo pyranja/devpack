@@ -10,7 +10,7 @@ Properties {
     $zip_cmd = "7za"
     $root = $PSScriptRoot
     $workspace = $(Join-Path $root out)
-    $package = $(Join-Path $workspace pkg)
+    $package = $(Join-Path $workspace devpack)
 }
 
 FormatTaskName "Devpack::{0}"
@@ -81,7 +81,7 @@ Task Assemble -description "Assemble the built package into a releasable archive
     Write-Verbose "Assembling $assembly_file from $package"
     Assert $(Test-Path $package) "package not yet built -> run task 'Build'"
     Remove-Item -Force -Recurse -ErrorAction SilentlyContinue $assembly_file
-    Compress-Archive -Path $package\* -DestinationPath $assembly_file -CompressionLevel Optimal -Force
+    Compress-Archive -Path $package -DestinationPath $assembly_file -CompressionLevel Optimal -Force
 }
 
 # download a binary from given URL and cache it
