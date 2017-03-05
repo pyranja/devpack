@@ -7,11 +7,10 @@ Set-StrictMode -Version "Latest"
 
 Properties {
     $version = [Version]"0.0.0"
-    $assembly = "devpack-$version.zip"
     $zip_cmd = "7za"
     $root = $PSScriptRoot
-    $workspace = Join-Path $root out
-    $package = Join-Path $workspace pkg
+    $workspace = $(Join-Path $root out)
+    $package = $(Join-Path $workspace pkg)
 }
 
 FormatTaskName "Devpack::{0}"
@@ -46,6 +45,10 @@ Task Test -description "run test task in a separate powershell instance." {
     powershell "Invoke-psake InlineTest"
 }
 
+Task ? {
+    Write-Host "v$version - using $zip_cmd"
+}
+
 Task InlineTest -description "run all module tests in current powershell session." {
     Write-Verbose "running integration tests"
     Assert $(Test-Path $package\Set-Env.ps1) "Set-Env.ps1 not found - is the package built?"
@@ -56,7 +59,7 @@ Task InlineTest -description "run all module tests in current powershell session
 }
 
 Task Assemble -description "Assemble the built package into a releasable archive." {
-    $assembly_file = Join-Path $workspace $assembly
+    $assembly_file = Join-Path $workspace "devpack-$version.zip"
     Write-Verbose "Assembling $assembly_file from $package"
     Assert $(Test-Path $package) "package not yet built -> run task 'Build'"
     Remove-Item -Force -Recurse -ErrorAction SilentlyContinue $assembly_file
