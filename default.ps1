@@ -101,5 +101,6 @@ function Fetch ($Uri) {
 
 # use configured 7zip executable to unpack given binary
 function Unpack ($Path, $Destination) {
-    Invoke-Expression "$zip_cmd x -bd -r -y -o`"$Destination`" `"$Path`""
+    Write-Verbose "unpacking $Path >> $Destination"
+    Invoke-Expression "$zip_cmd x -bd -r -y -o`"$Destination`" `"$Path`" | Out-Null"
 }
