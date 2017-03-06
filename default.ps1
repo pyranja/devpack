@@ -66,7 +66,7 @@ function RunIntegrationTests {
     If ($Env:APPVEYOR_JOB_ID) {
         $endpoint = "https://ci.appveyor.com/api/testresults/nunit/$Env:APPVEYOR_JOB_ID"
         Write-Verbose "uploading $test_results to $endpoint"
-        Invoke-RestMethod -Uri $endpoint -Method Post -InFile $(Resolve-Path $test_results) -ContentType "multipart/form-data"
+        (New-Object 'System.Net.WebClient').UploadFile($endpoint, $(Resolve-Path $test_results))
     } else {
         Write-Warning "APPVEYOR_JOB_ID not defined - skipping test result reporting"
     }
