@@ -125,6 +125,8 @@ function Fetch ($Uri) {
         return $cache_entry
     }
 
+    # force modern TLS version, otherwise TLS 1.0 is default
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     New-Item -Path $cache_entry -ItemType File -Force | Out-Null
     Invoke-WebRequest -Uri $Uri -OutFile $cache_entry
 
