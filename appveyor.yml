@@ -14,7 +14,7 @@ build_script:
   - ps: Invoke-psake -Verbose -taskList Build, Assemble -properties @{"version"="$Env:APPVEYOR_BUILD_VERSION";"zip_cmd"="7z"}
 
 test_script:
-  - ps: Invoke-psake -Verbose Test
+  - ps: Invoke-psake -Verbose InlineTest -properties @{"version"="$Env:APPVEYOR_BUILD_VERSION";"zip_cmd"="7z"}
 
 artifacts:
   - path: ./out/*.zip
