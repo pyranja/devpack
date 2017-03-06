@@ -84,6 +84,38 @@ Task Assemble -description "Assemble the built package into a releasable archive
     Compress-Archive -Path $package -DestinationPath $assembly_file -CompressionLevel Optimal -Force
 }
 
+Task CreateModule -description "Create a module stub." -requiredVariables name {
+    $title = (Get-Culture).TextInfo.ToTitleCase($name.toLower())
+    $module = "$root\modules\$($name.ToLower())"
+    New-Item -Path "$module" -ItemType Directory
+@"
+# TODO
+"@ | Out-File -FilePath "$module\env.partial.ps1" -Encoding utf8 -NoClobber
+
+@"
+Describe "module::$title" {
+    # TODO
+}
+"@ | Out-File -FilePath "$module\$name.Tests.ps1" -Encoding utf8 -NoClobber
+
+@"
+#Requires -Version 5
+Set-StrictMode -Version "Latest"
+
+<#
+    .SYNOPSIS devpack $title module
+#>
+
+FormatTaskName "$title::{0}"
+
+Task Default -requiredVariables target -Depends Install
+
+Task Install {
+    # TODO
+}
+"@ | Out-File -FilePath "$module\default.ps1" -Encoding utf8 -NoClobber
+}
+
 # download a binary from given URL and cache it
 function Fetch ($Uri) {
     $filename = Split-Path -Path $Uri -Leaf
