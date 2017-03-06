@@ -89,7 +89,7 @@ Task CreateModule -description "Create a module stub." -requiredVariables name {
     $module = "$root\modules\$($name.ToLower())"
     New-Item -Path "$module" -ItemType Directory
 @"
-# TODO
+`$Env:Path = "`$Env:Tools\$($name.ToLower());" + `$Env:Path
 "@ | Out-File -FilePath "$module\env.partial.ps1" -Encoding utf8 -NoClobber
 
 @"
