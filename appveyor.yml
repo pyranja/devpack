@@ -8,7 +8,7 @@ install:
   - ps: Install-Module pester
 
 before_build:
-  - ps: Invoke-psake ?
+  - ps: Invoke-psake ? -properties @{"version"="$Env:APPVEYOR_BUILD_VERSION";"zip_cmd"="7z"}
 
 build_script:
   - ps: Invoke-psake -Verbose -taskList Build, Assemble -properties @{"version"="$Env:APPVEYOR_BUILD_VERSION";"zip_cmd"="7z"}

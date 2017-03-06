@@ -42,7 +42,7 @@ Task Build -description "Apply all included modules to the workspace package." -
 }
 
 Task Test -description "run test task in a separate powershell instance." {
-    powershell "Invoke-psake InlineTest"
+    powershell "Invoke-psake InlineTest -Verbose"
 }
 
 Task ? {
@@ -66,7 +66,7 @@ function RunIntegrationTests {
     If ($Env:APPVEYOR_JOB_ID) {
         $endpoint = "https://ci.appveyor.com/api/testresults/nunit/$Env:APPVEYOR_JOB_ID"
         Write-Verbose "uploading $test_results to $endpoint"
-        (New-Object 'System.Net.WebClient').UploadFile($endpoint, (Resolve-Path $test_results))
+        Invoke-RestMethod -Uri $endpoint -Method Post -InFile $(Resolve-Path $test_results) -ContentType "multipart/form-data"
     } else {
         Write-Warning "APPVEYOR_JOB_ID not defined - skipping test result reporting"
     }
