@@ -5,6 +5,28 @@
 
 A port of the [devpack](https://github.com/Zuehlke/z-devpack) concept to a pure powershell build system.
 
+## Contributing
+
+### Prerequisites
+
+Install [psake](https://github.com/psake/psake), [pester](https://github.com/pester/Pester) and [7-zip](http://www.7-zip.org/):
+
+    choco install -y 7-zip
+    Install-Module psake
+    Install-Module pester
+
+### Adding a new Module
+
+Run
+
+    Invoke-psake CreateModule -Verbose -parameters @{name = '<module-name>'}
+
+That task creates a new subfolder in ./modules/ and prepares
+
+* a psake module build file (default.ps1)
+* a pester test file
+* a partial evironment variable definition
+
 ## License
 
 Copyright (C) 2017 Chris Borckholder
