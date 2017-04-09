@@ -19,6 +19,10 @@ test_script:
 artifacts:
   - path: ./out/*.zip
 
+branches:
+  only:
+    - master
+
 deploy:
   release: devpack-v$(APPVEYOR_BUILD_VERSION)
   description: 'full devpack'
