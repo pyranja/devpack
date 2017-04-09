@@ -19,5 +19,17 @@ test_script:
 artifacts:
   - path: ./out/*.zip
 
+deploy:
+  release: devpack-v$(APPVEYOR_BUILD_VERSION)
+  description: 'full devpack'
+  provider: GitHub
+  auth_token:
+    secure: McXn11nJ4l06C283bftRirmxi8bEa2exPp3JfCaVfipZUZ5IUU6570Y6Y0CwKkEu
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: false  # release all master commits
+
 # building tags triggers an infinite loop from github release tags
 skip_tags: true
