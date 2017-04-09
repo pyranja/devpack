@@ -15,6 +15,20 @@ Install [psake](https://github.com/psake/psake), [pester](https://github.com/pes
     Install-Module psake
     Install-Module pester
 
+### Build the devpack
+
+Run
+
+    Invoke-psake
+
+to build and assemble a devpack `.zip` file in the `out/` folder.
+
+Run
+
+    Invoke-psake test
+
+to execute all module tests after the devpack is built.
+
 ### Adding a new Module
 
 Run
